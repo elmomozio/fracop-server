@@ -2,7 +2,8 @@
 
 module.exports = {
     status,
-    init
+    init,
+    search
 };
 
 const elasticsearch = require('elasticsearch');
@@ -22,11 +23,18 @@ function status() {
 function init() {
     return client.search({
         index: 'cp-final',
+        type: 'cp'
+    }).then((resp) => resp.hits.hits.map((el) => el._source));
+}
+
+function search(cp) {
+    return client.search({
+        index: 'cp-final',
         type: 'cp',
         body: {
             query: {
                 "terms": {
-                    "Code_postal": [62410, 59000]
+                    "Code_postal": cp
                 }
             }
         }

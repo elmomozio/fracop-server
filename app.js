@@ -12,7 +12,7 @@ app.get('/', function(req, res, next) {
 
 app.post('/search', function(req, res) {
     console.log("req.body : ", req.body);
-    res.send('Hello World!', req.body);
+    elasticService.search(req.body.cp).then((resp) => res.send(resp)).catch(next);
 });
 
 
